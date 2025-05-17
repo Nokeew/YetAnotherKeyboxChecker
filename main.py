@@ -118,4 +118,10 @@ if __name__ == "__main__":
         print("Error: colorama package not installed. Install with:")
         print("pip install colorama")
         exit(1)
+    try:
+        import requests
+    except ImportError:
+        print("Error: requests package not installed. Install with:")
+        print("pip install requests")
+        exit(1)
     main()
