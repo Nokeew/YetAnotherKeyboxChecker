@@ -1,6 +1,7 @@
 import os
 import re
 import requests
+import time
 from colorama import Fore, Style, init
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
@@ -8,7 +9,7 @@ from collections import defaultdict
 
 def get_online_serial_list(url):
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, headers={'Cache-Control': 'no-cache'}, timeout=10)
         response.raise_for_status()
         return set(
             re.sub(r'[^a-f0-9]', '', line.strip().lower())
@@ -41,7 +42,7 @@ def process_certificate(cert_pem, online_serials):
         return None, None, False
 
 def main():
-    ONLINE_LIST_URL = "https://android.googleapis.com/attestation/status"
+    ONLINE_LIST_URL = "https://android.googleapis.com/attestation/status?" + str(int(time.time()))
     SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
     
     found_count = 0
